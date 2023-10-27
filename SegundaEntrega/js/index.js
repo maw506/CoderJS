@@ -1,4 +1,18 @@
-const cart = [];
+const cart = {};
+const coupons = [
+  {
+    id: 1,
+    code: "descuento",
+    porcDiscount: 15,
+    isValid: true,
+  },
+  {
+    id: 2,
+    code: "descuento_2",
+    porcDiscount: 50,
+    isValid: true,
+  },
+];
 const products = [
   {
     id: 1,
@@ -91,7 +105,6 @@ products.forEach((producto) => {
   productosContainer.appendChild(productDiv);
 });
 
-
 // la idea es crear la tabla del carrito tambien desde aqui para que se de forma
 // automatica la actualziacion previo al envio de datos
 
@@ -99,7 +112,7 @@ products.forEach((producto) => {
 
 // Función para agregar un producto al carrito
 // desde el boton inferior escribiendo el id
-function addToCart(event) {
+const addToCart = (event) => {
   event.preventDefault();
   const productId = prompt(
     "Ingrese el ID del producto que desea agregar al carrito:"
@@ -107,37 +120,43 @@ function addToCart(event) {
   const product = products.find((item) => item.id == productId);
 
   if (product) {
-    cart.push(product);
+    if (cart[productId]) {
+      cart[productId]++; // Si el producto ya está en el carrito, incrementa la cantidad
+    } else {
+      cart[productId] = 1; // Si es la primera vez que se agrega, establece la cantidad en 1
+    }
     alert(`${product.name} se ha agregado al carrito.`);
   } else {
     alert("Producto no encontrado. Por favor, ingrese un ID válido.");
   }
-}
-
+};
 // Función para agregar un producto al carrito
 // desde los botones de cada producto
-function addToCartProduct(event) {
+const addToCartProduct = (event) => {
   event.preventDefault();
   const productId = event.target.getAttribute("data-product-id");
   const product = products.find((item) => item.id == productId);
 
   if (product) {
-    cart.push(product);
+    if (cart[productId]) {
+      cart[productId]++; // Si el producto ya está en el carrito, incrementa la cantidad
+    } else {
+      cart[productId] = 1; // Si es la primera vez que se agrega, establece la cantidad en 1
+    }
     alert(`${product.name} se ha agregado al carrito.`);
   } else {
     alert("Producto no encontrado. Por favor, ingrese un ID válido.");
   }
-}
+};
 
-// Escuchar los clics en los botones "AGREGAR AL CARRITO"
+// Escuchar los clics en los botones "AGREGAR AL CARRITO" de cada producto
 const addToCartButtons = document.querySelectorAll(".addToCartBtn");
 addToCartButtons.forEach((button) => {
   button.addEventListener("click", addToCartProduct);
 });
 
-
 // Función para mostrar el contenido del carrito
-function viewCart() {
+const viewCart = () => {
   if (cart.length === 0) {
     alert("El carrito está vacío.");
   } else {
@@ -145,19 +164,77 @@ function viewCart() {
     let total = 0;
     let nroOrden = 1;
 
-    for (const item of cart) {
-      carritoTexto += `${nroOrden}. ${item.name} - Precio: $${item.price}\n`;
-      total += item.price;
+    for (const productId in cart) {
+      const product = products.find((item) => item.id == productId);
+      const count = cart[productId];
+      carritoTexto += `${nroOrden}. ${product.name} x ${count} - Precio unitario: $${product.price}\n`;
+      total += count * product.price;
       nroOrden++;
     }
-    
 
-    carritoTexto += `\nTotal: $${total}`;
-    console.log(carritoTexto)
+    // Verificar si hay un cupón de descuento aplicado
+    const appliedCoupon = coupons.find((coupon) => !coupon.isValid);
+
+    if (appliedCoupon) {
+      // Calcula el descuento en base al porcentaje indicado en el cupón
+      const discountAmount = (appliedCoupon.porcDiscount / 100) * total;
+      const discountedTotal = total - discountAmount;
+
+      carritoTexto += `\nTotal: $${total}`;
+      carritoTexto += `\n\nDescuento aplicado: -${appliedCoupon.porcDiscount}%`;
+      carritoTexto += `\n\nTotal con descuento: $${discountedTotal}`;
+    } else {
+      carritoTexto += `\nTotal: $${total}`;
+    }
+
+    console.log(carritoTexto);
     alert(carritoTexto);
   }
-}
+};
+
+// Función para aplicar un cupón de descuento
+const applyCoupon = () => {
+  const couponCode = prompt("Ingrese el código del cupón:");
+  const coupon = coupons.find((item) => item.code === couponCode);
+
+  if (coupon && coupon.isValid) {
+    // Verificar si se ha utilizado algún cupón
+    let couponUsed = false;
+    for (const item of coupons) {
+      if (!item.isValid) {
+        couponUsed = true;
+        break; // Si se encuentra un cupón utilizado, no es necesario continuar verificando
+      }
+    }
+
+    if (couponUsed) {
+      alert("Ya utilizó un cupón de descuento para esta compra.");
+    } else {
+      let total = 0;
+      // Calcular el total antes del descuento
+      for (const productId in cart) {
+        const product = products.find((item) => item.id == productId);
+        const count = cart[productId];
+        total += count * product.price;
+      }
+
+      // Calcula el descuento en base al porcentaje indicado en el cupón
+      const discountAmount = (coupon.porcDiscount / 100) * total;
+      const discountedTotal = total - discountAmount;
+
+      alert(`Se ha aplicado un descuento del ${coupon.porcDiscount}%`);
+      console.log(`Total con descuento: $${discountedTotal}`);
+      alert(`Total con descuento: $${discountedTotal}`);
+
+      // Marca el cupón como no válido
+      coupon.isValid = false;
+    }
+  } else {
+    alert("Cupón no válido o ya ha sido utilizado.");
+  }
+};
 
 // Asignar eventos a los botones
 document.getElementById("addProduct").addEventListener("click", addToCart);
 document.getElementById("viewCart").addEventListener("click", viewCart);
+document.getElementById("applyCoupon").addEventListener("click", applyCoupon);
