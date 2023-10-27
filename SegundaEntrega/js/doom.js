@@ -34,7 +34,7 @@ products.forEach((producto) => {
   productImage.classList.add("product-image");
 
   const productLink = document.createElement("a");
-  productLink.href = "single-product.html"; //futura pagina para ver el detalle del producto
+  productLink.href = "single-product.html"; //futura página para ver el detalle del producto
 
   const productImg = document.createElement("img");
   productImg.src = producto.photo;
@@ -53,7 +53,9 @@ products.forEach((producto) => {
 
   const addToCartLink = document.createElement("a");
   addToCartLink.href = "#";
-  addToCartLink.classList.add("cart-btn");
+  addToCartLink.classList.add("cart-btn", "addToCartBtn");
+
+  addToCartLink.setAttribute("data-product-id", producto.id);
 
   const cartIcon = document.createElement("i");
   cartIcon.classList.add("bi", "bi-cart-plus-fill", "ms-3");
@@ -74,3 +76,65 @@ products.forEach((producto) => {
 
 // la idea es crear la tabla del carrito tambien desde aqui para que se de forma
 // automatica la actualziacion previo al envio de datos
+
+//controlladores
+
+// Función para agregar un producto al carrito
+// desde el boton inferior escribiendo el id
+function addToCart() {
+  const productId = prompt(
+    "Ingrese el ID del producto que desea agregar al carrito:"
+  );
+  const product = products.find((item) => item.id == productId);
+
+  if (product) {
+    cart.push(product);
+    alert(`${product.name} se ha agregado al carrito.`);
+  } else {
+    alert("Producto no encontrado. Por favor, ingrese un ID válido.");
+  }
+}
+
+// Función para agregar un producto al carrito
+// desde los botones de cada producto
+function addToCartProduct(event) {
+  const productId = event.target.getAttribute("data-product-id");
+  const product = products.find((item) => item.id == productId);
+
+  if (product) {
+    cart.push(product);
+    alert(`${product.name} se ha agregado al carrito.`);
+  } else {
+    alert("Producto no encontrado. Por favor, ingrese un ID válido.");
+  }
+}
+
+// Escuchar los clics en los botones "AGREGAR AL CARRITO"
+const addToCartButtons = document.querySelectorAll(".addToCartBtn");
+addToCartButtons.forEach((button) => {
+  button.addEventListener("click", addToCartProduct);
+});
+
+
+// Función para mostrar el contenido del carrito
+function viewCart() {
+  console.log("vacio");
+  if (cart.length === 0) {
+    alert("El carrito está vacío.");
+  } else {
+    let carritoTexto = "Carrito de Compras:\n";
+    let total = 0;
+
+    for (const item of cart) {
+      carritoTexto += `${item.name} - Precio: $${item.price}\n`;
+      total += item.price;
+    }
+
+    carritoTexto += `\nTotal: $${total}`;
+    alert(carritoTexto);
+  }
+}
+
+// Asignar eventos a los botones
+document.getElementById("addProduct").addEventListener("click", addToCart);
+document.getElementById("viewCart").addEventListener("click", viewCart);
