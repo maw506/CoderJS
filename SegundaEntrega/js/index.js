@@ -138,19 +138,22 @@ addToCartButtons.forEach((button) => {
 
 // Función para mostrar el contenido del carrito
 function viewCart() {
-  console.log("vacio");
   if (cart.length === 0) {
     alert("El carrito está vacío.");
   } else {
-    let carritoTexto = "Carrito de Compras:\n";
+    let carritoTexto = "Carrito de Compras:\n\n";
     let total = 0;
+    let nroOrden = 1;
 
     for (const item of cart) {
-      carritoTexto += `${item.name} - Precio: $${item.price}\n`;
+      carritoTexto += `${nroOrden}. ${item.name} - Precio: $${item.price}\n`;
       total += item.price;
+      nroOrden++;
     }
+    
 
     carritoTexto += `\nTotal: $${total}`;
+    console.log(carritoTexto)
     alert(carritoTexto);
   }
 }
