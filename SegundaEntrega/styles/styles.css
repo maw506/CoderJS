@@ -9,12 +9,9 @@ h1 {
   background-color: #012738;
 }
 .single-product-item {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
   transition: 0.3s;
 }
 .single-product-item:hover {
-  -webkit-box-shadow: none;
   box-shadow: none;
 }
 .single-product-item {
@@ -33,8 +30,6 @@ h1 {
 }
 
 .product-image img {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
   transition: 0.3s;
 }
 
@@ -65,8 +60,6 @@ a.cart-btn {
 }
 
 a.cart-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
   transition: 0.3s;
   text-decoration: none;
 }

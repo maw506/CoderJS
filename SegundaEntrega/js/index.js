@@ -18,6 +18,24 @@ const products = [
     photo: "./img/product-img-3.jpg",
     price: 150,
   },
+  {
+    id: 4,
+    name: "kiwi",
+    photo: "./img/product-img-4.jpg",
+    price: 200,
+  },
+  {
+    id: 5,
+    name: "Manzana verde",
+    photo: "./img/product-img-5.jpg",
+    price: 230,
+  },
+  {
+    id: 6,
+    name: "Frambuesas",
+    photo: "./img/product-img-6.jpg",
+    price: 300,
+  },
 ];
 
 // iteracion de los objetos en la pagina
@@ -81,7 +99,8 @@ products.forEach((producto) => {
 
 // Función para agregar un producto al carrito
 // desde el boton inferior escribiendo el id
-function addToCart() {
+function addToCart(event) {
+  event.preventDefault();
   const productId = prompt(
     "Ingrese el ID del producto que desea agregar al carrito:"
   );
@@ -98,6 +117,7 @@ function addToCart() {
 // Función para agregar un producto al carrito
 // desde los botones de cada producto
 function addToCartProduct(event) {
+  event.preventDefault();
   const productId = event.target.getAttribute("data-product-id");
   const product = products.find((item) => item.id == productId);
 
