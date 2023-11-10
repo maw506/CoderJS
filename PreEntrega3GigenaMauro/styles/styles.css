@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  font-size: 30px;
+}
+.navbar {
+  background-color: #012738;
+}
+.single-product-item {
+  transition: 0.3s;
+}
+.single-product-item:hover {
+  box-shadow: none;
+}
+.single-product-item {
+  margin-bottom: 30px;
+}
+.single-product-item h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.single-product-item {
+  -webkit-box-shadow: 0 0 20px #e4e4e4;
+  box-shadow: 0 0 20px #e4e4e4;
+  padding-bottom: 50px;
+  border-radius: 5px;
+}
+
+.product-image img {
+  transition: 0.3s;
+}
+
+.product-image img:hover {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.product-image {
+  padding: 30px;
+  padding-bottom: 0;
+}
+
+.product-image img {
+  width: 90%;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+td.product-image img {
+  max-width: 50px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+a.boxed-btn,
+a.bordered-btn,
+a.cart-btn {
+  border-radius: 50px;
+}
+
+a.cart-btn {
+  transition: 0.3s;
+  text-decoration: none;
+}
+a.cart-btn:hover {
+  background-color: #051922;
+  color: #f28123;
+}
+a.cart-btn {
+  font-family: "Poppins", sans-serif;
+  display: inline-block;
+  background-color: #f28123;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+a.cart-btn i {
+  margin-right: 5px;
+}
+.single-product-form a.cart-btn {
+  margin-bottom: 15px;
+}
+
+.cart-table-wrap tbody tr td {
+  text-align: center;
+}
+.cart-table-wrap tbody tr td {
+  border: 1px solid #efefef;
+  padding: 20px 0;
+  color: #051922;
+}
+table.cart-table {
+  border: 1px solid #f9f9f9;
+  width: 100%;
+}
+thead.cart-table-head tr {
+  background-color: #efefef;
+}
+tr.table-head-row th {
+  border-right: 1px solid #efefef;
+  padding: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+tr.table-head-row th:last-child {
+  border-right: none;
+}
+td.product-quantity input {
+  margin-bottom: 0;
+}
+input[type="number"] {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100px;
+  margin-bottom: 15px;
+}
+.total-section table.total-table {
+  border: 1px solid #efefef;
+  width: 100%;
+}
+table.total-table tbody tr.total-data td {
+  border: 1px solid #efefef;
+  padding: 19px 15px;
+}
+
+tr.table-total-row {
+  background-color: #efefef;
+}
+
+tr.table-total-row th {
+  font-weight: 500;
+  font-size: 15px;
+  padding: 15px;
+}
+
+table.total-table tbody tr.total-data td {
+  border: 1px solid #efefef;
+  padding: 19px 15px;
+}
+
+tr.total-data td strong {
+  margin-right: 32px;
+}
+.coupon-section {
+  margin-top: 50px;
+}
+.coupon-section h3 {
+  font-size: 20px;
+  font-weight: 500;
+}
+.coupon-form-wrap form p input[type="text"] {
+  border: 1px solid #ddd;
+  color: #051922;
+  padding: 15px;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 15px;
+}

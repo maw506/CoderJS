@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>E - comerce</title>
-        <link
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css"
+    />
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
@@ -40,33 +44,40 @@
             <li class="nav-item">
               <a class="nav-link" href="./html/cart.html">Carrito</a>
             </li>
-                      </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="./html/coupons.html">Cupones</a>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
     <!-- navbar -->
 
     <div class="container mb-5">
-      <div class="row text-center mt-5 mb-5">
+      <div class="row text-center mt-5 mb-3">
         <h1>NUESTROS PRODUCTOS</h1>
       </div>
       <div class="row mb-5">
         <div class="col-12">
           <div class="row">
-            <button class="btn btn-success" id="viewCart">VER CARRITO</button>
-            <button class="btn btn-warning mt-3" id="applyCoupon">TENGO UN CUPON</button>
-            <button class="btn btn-primary mt-3" id="addProduct">AGREAGAR AL CARRITO POR ID</button>
+            <!-- <button class="btn btn-success" id="viewCart">VER CARRITO</button> -->
+            <!-- <button class="btn btn-warning mt-3" id="applyCoupon">
+              TENGO UN CUPON
+            </button> -->
+            <!-- <button class="btn btn-primary mt-3" id="addProduct">
+              AGREAGAR AL CARRITO POR ID
+            </button> -->
           </div>
         </div>
       </div>
       <div class="row" id="products"></div>
     </div>
-    <script src="./js/index.js"></script>
-    <script src="./js/controllers.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-      </body>
+    <script src="./js/index.js"></script>
+  </body>
 </html>

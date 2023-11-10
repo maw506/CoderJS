@@ -19,37 +19,37 @@ const products = [
     name: "Frutilla",
     photo: "./img/product-img-1.jpg",
     price: 85,
-  },
+      },
   {
     id: 2,
     name: "Uva",
     photo: "./img/product-img-2.jpg",
     price: 100,
-  },
+      },
   {
     id: 3,
     name: "Limones",
     photo: "./img/product-img-3.jpg",
     price: 150,
-  },
+      },
   {
     id: 4,
     name: "kiwi",
     photo: "./img/product-img-4.jpg",
     price: 200,
-  },
+      },
   {
     id: 5,
     name: "Manzana verde",
     photo: "./img/product-img-5.jpg",
     price: 230,
-  },
+      },
   {
     id: 6,
     name: "Frambuesas",
     photo: "./img/product-img-6.jpg",
     price: 300,
-  },
+    },
 ];
 
 // iteracion de los objetos en la pagina
@@ -143,7 +143,7 @@ const addToCartProduct = (event) => {
     } else {
       cart[productId] = 1; // Si es la primera vez que se agrega, establece la cantidad en 1
     }
-    alert(`${product.name} se ha agregado al carrito.`);
+alert(`${product.name} se ha agregado al carrito.`);
   } else {
     alert("Producto no encontrado. Por favor, ingrese un ID válido.");
   }
