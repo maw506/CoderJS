@@ -12,6 +12,12 @@ const coupons = [
     porcDiscount: 50,
     isValid: true,
   },
+  {
+    id: 3,
+    code: "descuento_3",
+    porcDiscount: 30,
+    isValid: false,
+  },
 ];
 const products = [
   {
@@ -63,17 +69,24 @@ const orderSummary = {
   shippingCost: 500,
   total: 0,
   discount: 0,
-}
+};
 
 // Obtener productos desde localStorage al cargar la página
 const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
 const storedCoupons = JSON.parse(localStorage.getItem("coupons")) || [];
-
 let storedCart = JSON.parse(localStorage.getItem("cart")) || {};
+
+console.log('cart',storedCart);
+console.log('coupons',storedCoupons);
+console.log('products',storedProducts);
 
 // Verificar si el carrito está vacío y, si es así, inicializarlo con un objeto vacío
 if (Object.keys(storedCart).length === 0) {
   storedCart = {};
+}
+
+if (products.length > 0) {
+  localStorage.setItem("products", JSON.stringify(products));
 }
 
 // Guardar datos en localStorage al cargar la página (opcional, solo si el carrito estaba vacío inicialmente)
@@ -147,14 +160,14 @@ const addToCartProduct = async (event) => {
   if (product) {
     // Mostrar la alerta de confirmación
     const result = await Swal.fire({
-      title: '¿Agregar al carrito?',
+      title: "¿Agregar al carrito?",
       text: `¿Deseas agregar ${product.name} al carrito?`,
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'ACEPTAR',
-      cancelButtonText: 'CANCELAR',
+      confirmButtonText: "ACEPTAR",
+      cancelButtonText: "CANCELAR",
       confirmButtonColor: "green",
-      cancelButtonColor: 'red'
+      cancelButtonColor: "red",
     });
 
     if (result.isConfirmed) {
@@ -170,16 +183,16 @@ const addToCartProduct = async (event) => {
       console.log("Carrito actualizado:", storedCart);
 
       await Swal.fire({
-        icon: 'success',
-        title: 'Producto agregado al carrito',
+        icon: "success",
+        title: "Producto agregado al carrito",
         text: `${product.name} se ha agregado al carrito.`,
       });
     }
   } else {
     await Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Producto no encontrado. Por favor, ingrese un ID válido.',
+      icon: "error",
+      title: "Error",
+      text: "Producto no encontrado. Por favor, ingrese un ID válido.",
     });
   }
 };
@@ -189,7 +202,6 @@ const addToCartButtons = document.querySelectorAll(".addToCartBtn");
 addToCartButtons.forEach((button) => {
   button.addEventListener("click", addToCartProduct);
 });
-
 
 console.log(storedProducts);
 console.log(storedCoupons);
