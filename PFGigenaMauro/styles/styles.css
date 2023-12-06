@@ -159,3 +159,7 @@ tr.total-data td strong {
   border-radius: 5px;
   font-size: 15px;
 }
+
+.bg-success {
+  background-color: rgba(20, 63, 132, 0.752) !important;
+}

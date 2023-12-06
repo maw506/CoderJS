@@ -14,16 +14,32 @@ const removeFromCart = (productId) => {
 
     localStorage.setItem("cart", JSON.stringify(storedCart));
 
-    generateCartRows();
+    // Actualizar orderSummary después de modificar el carrito
+    updateOrderSummary();
   }
 };
 
-// Función para actualizar la cantidad de un producto en el carrito
 const updateQuantity = (productId, newQuantity) => {
   storedCart[productId] = parseInt(newQuantity) || 0;
 
   localStorage.setItem("cart", JSON.stringify(storedCart));
 
+  updateOrderSummary();
+  generateCartRows();
+};
+
+// Función para actualizar el objeto orderSummary en localStorage
+const updateOrderSummary = () => {
+  const orderSummary = {
+    subtotal: calculateSubtotal(),
+    shippingCost: 100,
+    total: calculateSubtotal() + 100,
+    discount: 0, // Puedes implementar la lógica de descuentos aquí
+  };
+
+  localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+
+  generateTableData();
   generateCartRows();
 };
 
@@ -78,10 +94,12 @@ const generateCartRows = () => {
       quantityInput.type = "number";
       quantityInput.placeholder = "0";
       quantityInput.value = storedCart[productId];
+
       // Agrega un evento al input para actualizar la cantidad en el carrito
-      quantityInput.addEventListener("change", (event) =>
-        updateQuantity(productId, event.target.value)
-      );
+      quantityInput.addEventListener("change", (event) => {
+        const newQuantity = parseInt(event.target.value) || 0;
+        updateQuantity(productId, newQuantity);
+      });
       quantityColumn.appendChild(quantityInput);
       row.appendChild(quantityColumn);
 
@@ -95,24 +113,8 @@ const generateCartRows = () => {
       cartBody.appendChild(row);
     }
   }
+  generateTableData();
 };
-
-// Función para pagar, actualmente limpia el carrito
-const payButton = document.getElementById("payButton");
-
-payButton.addEventListener("click", async (event) => {
-  event.preventDefault();
-  localStorage.removeItem("cart");
-  storedCart = {};
-
-  await Swal.fire({
-    icon: "info",
-    title: "Info",
-    text: "Carrito limpiado. Gracias por tu compra.",
-  }).then(() => {
-    window.location.reload();
-  });
-});
 
 // Obtener el contenedor donde se mostrará la tabla de resumen del pedido
 const tableDataContainer = document.getElementById("tableData");
@@ -132,13 +134,10 @@ const calculateSubtotal = () => {
 };
 
 // Función para generar la tabla de resumen del pedido
-//en esta funcion quiero lograr que se haga de forma dinamica al
-// momento de acmbiar el numero de canidad tqambien pero tenia algunos errores
-
 const generateTableData = () => {
-  const subtotal = calculateSubtotal();
-  const shippingCost = 50;
-  const total = subtotal + shippingCost;
+  // Obtener el resumen del pedido desde localStorage
+  const orderSummary = JSON.parse(localStorage.getItem("orderSummary")) || {};
+  const { subtotal, shippingCost, total, discount } = orderSummary;
 
   // Crear la nueva tabla
   const tableData = document.createElement("table");
@@ -155,25 +154,47 @@ const generateTableData = () => {
     <tbody>
       <tr class="total-data">
         <td><strong>Subtotal:</strong></td>
-        <td>$${subtotal.toFixed(2)}</td>
+        <td>$ ${subtotal.toFixed(2)}</td>
       </tr>
       <tr class="total-data">
         <td><strong>Envio:</strong></td>
-        <td>$${shippingCost.toFixed(2)}</td>
+        <td>$ ${shippingCost.toFixed(2)}</td>
+      </tr>
+      <tr class="total-data">
+        <td><strong>Descuento:</strong></td>
+        <td>% ${discount}</td>
       </tr>
       <tr class="total-data">
         <td><strong>Total a pagar:</strong></td>
-        <td>$${total.toFixed(2)}</td>
+        <td>$ ${total.toFixed(2)}</td>
       </tr>
     </tbody>
   `;
 
   // Limpiar el contenedor antes de agregar la nueva tabla
+  const tableDataContainer = document.getElementById("tableData");
   tableDataContainer.innerHTML = "";
 
   // Agregar la nueva tabla al contenedor
   tableDataContainer.appendChild(tableData);
 };
+
+// Función para pagar, actualmente limpia el carrito
+const payButton = document.getElementById("payButton");
+
+payButton.addEventListener("click", async (event) => {
+  event.preventDefault();
+  localStorage.removeItem("cart");
+  storedCart = {};
+
+  await Swal.fire({
+    icon: "info",
+    title: "Info",
+    text: "Carrito limpiado. Gracias por tu compra.",
+  }).then(() => {
+    window.location.reload();
+  });
+});
 
 // Llama a la función inicial para generar las filas de la tabla
 generateCartRows();
