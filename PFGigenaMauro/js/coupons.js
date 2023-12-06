@@ -34,7 +34,7 @@ const couponList =
   storedCoupons.length > 0 ? storedCoupons : generateDefaultCoupons();
 
 // Función para generar dinámicamente la sección de cupones en HTML
-function generateCouponSection() {
+const generateCouponSection = () => {
   const couponsContainer = document.getElementById("coupons");
 
   couponList.forEach((coupon) => {
@@ -85,8 +85,9 @@ function generateCouponSection() {
     buttonRow.classList.add("row", "text-center", "px-5", "mt-5");
 
     const useCouponButton = document.createElement("a");
-    useCouponButton.classList.add("cart-btn");
+    useCouponButton.classList.add("cart-btn", "btn-discount");
     useCouponButton.textContent = "APLICAR DESCUENTO";
+    useCouponButton.setAttribute("data-index", coupon.id);
 
     buttonRow.appendChild(useCouponButton);
 
@@ -96,10 +97,10 @@ function generateCouponSection() {
 
     couponsContainer.appendChild(couponDiv);
   });
-}
+};
 
 // Función para aplicar descuento
-function applyCouponDiscount(porcDiscount) {
+const applyCouponDiscount = (porcDiscount) => {
   const orderSummary = JSON.parse(localStorage.getItem("orderSummary")) || {
     subtotal: 0,
     shippingCost: 100,
@@ -107,27 +108,57 @@ function applyCouponDiscount(porcDiscount) {
     discount: 0,
   };
 
-  const discountedSubtotal =
-    orderSummary.subtotal * ((100 - porcDiscount) / 100);
+  // Verificar si subtotal está definido
+  if (orderSummary.hasOwnProperty("subtotal")) {
+    const discountedSubtotal = orderSummary.subtotal * (1 - porcDiscount / 100);
 
-  orderSummary.subtotal = discountedSubtotal;
-  orderSummary.discount = porcDiscount;
-  orderSummary.total = discountedSubtotal + orderSummary.shippingCost;
+    // Redondear el resultado a dos decimales
+    orderSummary.subtotal = parseFloat(discountedSubtotal.toFixed(2));
+    orderSummary.discount = porcDiscount;
+    orderSummary.total = orderSummary.subtotal + orderSummary.shippingCost;
 
-  // Guardar orderSummary actualizado en el localStorage
-  localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
-
-  
-}
+    // Guardar orderSummary actualizado en el localStorage
+    localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+  } else {
+    console.error(
+      "Error: El resumen del pedido no tiene la propiedad 'subtotal'."
+    );
+  }
+};
 
 // Evento para aplicar descuento al hacer clic en el botón
-const useCouponButton = document.querySelectorAll(".cart-btn");
-useCouponButton.forEach((button, index) => {
+const useCouponButtons = document.querySelectorAll(".btn-discount");
+useCouponButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const porcDiscount = couponList[index].porcDiscount;
-    applyCouponDiscount(porcDiscount);
+    const index = button.getAttribute("data-index");
+    const selectedCoupon = couponList.find((coupon) => coupon.id == index);
+
+    if (selectedCoupon && selectedCoupon.isValid) {
+      const porcDiscount = selectedCoupon.porcDiscount;
+      applyCouponDiscount(porcDiscount);
+      showDiscountAppliedAlert(porcDiscount);
+    } else {
+      showInvalidCouponAlert();
+    }
   });
 });
 
-// Llamar a la función para generar la sección de cupones al cargar la página
+// Función para mostrar una alerta cuando se aplica el descuento
+function showDiscountAppliedAlert(porcDiscount) {
+  Swal.fire({
+    icon: "success",
+    title: "Descuento aplicado",
+    text: `Se aplicó un descuento del ${porcDiscount}% a tu compra.`,
+  });
+}
+
+// Función para mostrar una alerta cuando se aplica un descuento inválido
+function showInvalidCouponAlert() {
+  Swal.fire({
+    icon: "error",
+    title: "Cupón no válido",
+    text: "Este cupón no puede ser aplicado. Por favor, verifica la validez del cupón.",
+  });
+}
+
 generateCouponSection();
