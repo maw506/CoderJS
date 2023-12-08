@@ -71,6 +71,7 @@ const orderSummary = {
   discount: 0,
 };
 
+
 // Obtener productos desde localStorage al cargar la página
 const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
 const storedCoupons = JSON.parse(localStorage.getItem("coupons")) || [];
@@ -171,22 +172,31 @@ const addToCartProduct = async (event) => {
     });
 
     if (result.isConfirmed) {
-      if (storedCart[productId]) {
-        storedCart[productId]++; // Si el producto ya está en el carrito, incrementa la cantidad
-      } else {
-        storedCart[productId] = 1; // Si es la primera vez que se agrega, establece la cantidad en 1
+      // Simular una solicitud asincrónica con fetch
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts/1'); // URL ficticia
+        const data = await response.json();
+
+        // Aquí se realizarian las operaciones necesarias con la respuesta
+        
+        if (storedCart[productId]) {
+          storedCart[productId]++;
+        } else {
+          storedCart[productId] = 1;
+        }
+
+        localStorage.setItem("cart", JSON.stringify(storedCart));
+        console.log("Carrito actualizado:", storedCart);
+
+        await Swal.fire({
+          icon: "success",
+          title: "Producto agregado al carrito",
+          text: `${product.name} se ha agregado al carrito.`,
+        });
+      } catch (error) {
+        console.error("Error en la solicitud asincrónica:", error);
+        // Manejar errores aquí si es necesario
       }
-
-      // Guardar el carrito actualizado en localStorage
-      localStorage.setItem("cart", JSON.stringify(storedCart));
-
-      console.log("Carrito actualizado:", storedCart);
-
-      await Swal.fire({
-        icon: "success",
-        title: "Producto agregado al carrito",
-        text: `${product.name} se ha agregado al carrito.`,
-      });
     }
   } else {
     await Swal.fire({
@@ -196,6 +206,7 @@ const addToCartProduct = async (event) => {
     });
   }
 };
+
 
 // Escuchar los clics en los botones "AGREGAR AL CARRITO" de cada producto
 const addToCartButtons = document.querySelectorAll(".addToCartBtn");
